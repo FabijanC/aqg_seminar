@@ -1,30 +1,30 @@
 \documentclass[times, utf8, seminar, numeric]{fer}
 \usepackage{booktabs}
- \usepackage{url}
+\usepackage{url}
 
 \begin{document}
 
 % Ukljuci literaturu u seminar
 \nocite{*}
 
-% TODO: Navedite naslov rada.
-\title{Naslov seminarskog rada}
+\title{Automatsko generiranje pitanje}
 
-% TODO: Navedite vaše ime i prezime.
-\author{Ime i prezime studenta}
+\author{Fabijan Čorak}
 
-% TODO: Navedite ime i prezime voditelja.
-\voditelj{Ime i prezime voditelja}
+\mentor{izv.\ prof.\ dr.\ sc.\ Jan Šnajder}
 
 \maketitle
 
 \tableofcontents
 
 \chapter{Uvod}
-Uvod.
+Ovaj seminarski rad predstavlja pregled područja automatskog generiranja pitanja. Riječ je o postupku ekstrakcije pitanja iz nekog polaznog teksta bez aktivnog ljudskog posredovanja. Kome ovo može koristiti? Nastavnicima u evaluaciji studenata, kao i samim studentima u provjeravanju njihovog znanja \cite{labutov2015deep}.
 
-\chapter{Seminarski rad}
-Rad.
+Ovisno o veličini polaznog teksta rješenja na ovom području mogu se podijeliti na pristupe \textit{izjavna rečenica} - \textit{upitna rečenica} i \textit{paragraf} - \textit{upitna rečenica}. Pravi je izazov metoda koja jedno provodi u drugo. Osvrt je načinjen kroz analizu triju različitih pristupa opisanih u radovima \cite{du2018harvesting}, \cite{flor2018semantic} i \cite{labutov2015deep}. Za svaki rad opisana je njegova ideja kao slijed koraka od problema do rješenja te postupak vrednovanja. Dodatno, komentirani su prednosti odnosno nedostaci svakog pristupa.
+
+\chapter{Duboka pitanja bez dubokog razumijevanja}
+\section{Ideja}
+Naslovu unatoč, pristup opisan u radu \cite{labutov2015deep} nema veze s dubokim učenjem. Pitanja su duboka jer proizlaze iz čitavog predočenog teksta, a bez razumijevanja su jer nastaju prema generičnim predlošcima s kojima nisu u direktnoj svezi. 
 
 \chapter{Zaključak}
 Zaključak.

@@ -248,9 +248,9 @@
 }
 
 \if@radseminar%
-  \def\voditelj#1{\gdef\@voditelj{#1}}
+  \def\mentor#1{\gdef\@mentor{#1}}
   
-  \def\@voditelj{\@latex@warning@no@line{Voditelj nije naveden. Koristi \noexpand\voditelj za definiranje}} 
+  \def\@mentor{\@latex@warning@no@line{Mentor nije naveden. Koristi \noexpand\mentor za definiranje}} 
 \else%
   \def\thesisnumber#1{\gdef\@thesisnumber{#1}}
   \def\@thesisnumber{\@latex@warning@no@line{Broj rada nije definiran.
@@ -286,7 +286,7 @@
 	        	\if@radseminar%
 	        	  {\itshape \@author} \\
 	      
-	        	  Voditelj: {\itshape \@voditelj}
+	        	  Mentor: {\itshape \@mentor}
 	        	\else
 				    \@author
 				\fi
