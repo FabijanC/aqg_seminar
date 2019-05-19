@@ -7,7 +7,7 @@
 
 \nocite{*}
 
-\title{Automatsko generiranje pitanje}
+\title{Generiranje pitanja pomoću strojnog učenja}
 
 \author{Fabijan Čorak}
 
@@ -18,12 +18,14 @@
 \tableofcontents
 
 \chapter{Uvod}
-Ovaj seminarski rad predstavlja pregled područja domenski neovisnog automatskog generiranja pitanja na engleskom jeziku. Riječ je o postupku ekstrakcije pitanja iz nekog polaznog teksta bez aktivnog ljudskog posredovanja. Kome ovo može koristiti? Nastavnicima u evaluaciji studenata, kao i samim studentima u samoprovjeri \cite{labutov2015deep} te autorima kviz-pitanja.
+Ovaj seminarski rad predstavlja pregled područja domenski neovisnog automatskog generiranja pitanja na engleskom jeziku. Riječ je o postupku ekstrakcije pitanja iz nekog polaznog teksta bez aktivnog ljudskog posredovanja. Kome ovo može koristiti? Nastavnicima u evaluaciji studenata, kao i samim studentima u samoprovjeri \cite{labutov2015deep}, dijaloškim sustavima \cite{flor2018semantic} te autorima kviz-pitanja.
 
-Ovisno o veličini polaznog teksta, rješenja na ovom području mogu se podijeliti na pristupe \textit{izjavna rečenica} - \textit{upitna rečenica} i \textit{paragraf} - \textit{upitna rečenica}. Problem automatskog generiranja pitanja svodi se dakle na prevođenje jednog u drugo. Osvrt je načinjen kroz analizu triju različitih pristupa opisanih u radovima \cite{du2018harvesting}, \cite{flor2018semantic} i \cite{labutov2015deep}. Naslovi nrednih triju poglavlja hrvatski su prijevodi njihovih izvornih imena. Za svaki rad opisani su: ideja, uporaba, podaci, učenje, primjeri pitanja, evaluacija rezultata te distinkcije.
-Ideja ovog seminara nije analiza rezultata pojedinih radova, već nekome tko u ovom području nema iskustva dati uvid u moguće pristupe. %TODO ovdi sam možda ipak fulo sad kad vidim upute iz maila
+Ovisno o veličini polaznog teksta, rješenja na ovom području mogu se podijeliti na pristupe \textit{izjavna rečenica} - \textit{upitna rečenica} i \textit{paragraf} - \textit{upitna rečenica}. Problem automatskog generiranja pitanja svodi se dakle na prevođenje jednog u drugo. Osvrt je načinjen kroz analizu triju različitih pristupa opisanih u radovima \cite{du2018harvesting}, \cite{flor2018semantic} i \cite{labutov2015deep}. Naslovi nrednih triju poglavlja hrvatski su prijevodi njihovih izvornih imena. Za svaki rad opisani su: način rada, podaci, učenje, primjeri pitanja, evaluacija rezultata te distinkcije.
+Postupak evaluacije različit je od uobičajenog jer za isti polazni tekst ne postoji jedinstveno točno postavljeno pitanje.
+Cilj ovog seminara nije analiza rezultata pojedinih radova, već nekome tko u ovom području nema iskustva dati uvid u moguće pristupe u oblikovanje problema i mjerenje performani.
+
 \chapter{Duboka pitanja bez dubokog razumijevanja}
-\section{Ideja}
+\section{Način rada}
 
 Naslovu unatoč, pristup opisan u radu \cite{labutov2015deep} nema veze s dubokim učenjem. Pitanja su duboka jer proizlaze iz čitavog predočenog teksta, a bez razumijevanja jer nastaju prema generičnim predlošcima i sâm sustav zapravo ne zna na njih odgovoriti. Pojednostavljeni prikaz učenja i uporabe sustava nalazi se na slici \ref{fig:deep1}.
 
@@ -34,28 +36,29 @@ Naslovu unatoč, pristup opisan u radu \cite{labutov2015deep} nema veze s duboki
 	\label{fig:deep1}
 \end{figure}
 
-\section{Uporaba}
 Sustav prima tekst o nekomu/nečemu i istaknut jedan njegov segment. Istaknuti segment oznaka je da se pitanja trebaju generirati upravo iz njega. Prvo se na temelju čitavog teksta određuje kojoj od osam kategorija pripada. Potom se određuje kojoj od pedeset sekcija unutar kategorije pripada istaknuti segment. Zatim se iz baze dohvaćaju predlošci napisani upravo za tu kategoriju odnosno sekciju te se za svaki predložak donosi odluka tvori li on pitanje relevantno za polazni tekst.
 
 \section{Podaci}
-Razmatrani podaci su članci s Wikipedije i njihova pripadnost određenim grupama prema sustavu Freebase. Autori su na temelju takve raspodjele s mnogo kategorija napravili svoju od ukupno osam: \textit{osoba, mjesto, događaj, organizacija, umjetnost, znanost, zdravlje, religija}. Ovim kategorijama obuhvaćeno je 78\% svih članaka. Ontologija spomenuta na slici \ref{fig:deep1} skup je Kartezijevih produkata pojedinih kategorija i svih sekcija (podnaslova) iz članaka koji pripadaju toj kategoriji. Primjerice od kategorije \textit{osoba} i sekcija njenih članaka kao što su \textit{poslovna karijera} i \textit{politička karijera} dobiva se \textit{\{(osoba, poslovna karijera), (osoba, politička karijera)\}}. Uzimajući u obzir pokrivenost članaka, izabrano je pedeset sekcija svake kategorije i za svaku je napravljen opisani Kartezijev produkt. Svi produkti zajedno čine ontologiju.
+Razmatrani podaci su članci s Wikipedije i njihova pripadnost određenim grupama prema sustavu Freebase. Autori su na temelju takve raspodjele s mnogo kategorija napravili svoju od ukupno osam: \textit{osoba, mjesto, događaj, organizacija, umjetnost, znanost, zdravlje, religija}. Ovim kategorijama obuhvaćeno je 78\% svih članaka. Ontologija spomenuta na slici \ref{fig:deep1} skup je Kartezijevih produkata pojedinih kategorija i svih sekcija (podnaslova) iz članaka koji pripadaju toj kategoriji. Npr.\ od kategorije \textit{osoba} i sekcija njenih članaka kao što su \textit{poslovna karijera} i \textit{politička karijera} dobiva se \textit{\{(osoba, poslovna karijera), (osoba, politička karijera)\}}. Uzimajući u obzir pokrivenost članaka, izabrano je pedeset sekcija svake kategorije i za svaku je napravljen opisani Kartezijev produkt. Svi produkti zajedno čine ontologiju.
 
-Predložak podrazumijeva rečenicu u koju se naknadno umeće ime entiteta o kojem je pitanje, npr.: \textit{Who were the key influences on \_\_\_\_ in their childhoold?} Za generiranje predložaka pitanja uposleno je 78 ljudi na sustavu \textit{Amazon Mechanical Turk}. Pri stvaranju predložaka radnici nisu imali uvid u konkretne članke, već samo to za koju ih kategoriju odnosno sekciju trebaju napisati. Generirano je 995 različitih predložaka. Dodatnih 229 radnika angažirano je za ocjenu relevantnosti. Važno je istaknuti da su generirani predlošci samo za kategorije \textit{osoba} i \textit{mjesto}, čime je smanjen posao radnika, a valjanost evaluacije pretpotavlja se nije značajno narušena zbog toga što članci iz tih dviju kategorija obuhvaćaju gotovo 50\% svih članaka na Wikipediji. 
+Predložak pitanja podrazumijeva upitnu rečenicu u koju se naknadno umeće ime entiteta koji je središnja tema članka, npr.: \textit{Who were the key influences on \_\_\_\_ in their childhood?} Za generiranje predložaka uposleno je 78 ljudi na sustavu \textit{Amazon Mechanical Turk}. Pri stvaranju predložaka radnici nisu imali uvid u konkretne članke, već samo to za koju ih kategoriju odnosno sekciju trebaju napisati. Generirano je 995 različitih predložaka. Važno je istaknuti da su generirani predlošci samo za kategorije \textit{osoba} i \textit{mjesto}, čime je smanjen posao radnika, a valjanost evaluacije pretpotavlja se nije značajno narušena zbog toga što članci iz tih dviju kategorija obuhvaćaju gotovo 50\% svih članaka na Wikipediji. Dodatnih 229 radnika angažirano je za ocjenu relevantnosti. Prikupljeno je 4439 trojki \textit{(pitanje, članak, relevantnost)}.
+
+Prethodno opisani podaci služe za treniranje, dok je za testiranje s Wikipedije uzorkovano 12 članaka za koje je klasifikator vraća oznaku \textit{osoba} ili \textit{mjesto} i za svaki njihov segment (sekciju) dohvaćeno je do 20 pitanja poredanih prema relevantnosti. Dodatna 62 radnika sa sustava \textit{Amazon Mechanical Turk} napravila su 256 novih trojki \textit{(pitanje, članak, relevantnost)}.
 
 \section{Učenje}
 Sustav se oslanja na dvije vrste modela: klasifikator kategorije/sekcije teksta i klasifikator relevantnosti predloška. Za obje vrste korištena je logistička regresija s L2-regularizacijom.
 
 Prva vrsta modela kao ulaz prima tf-idf reprezentaciju teksta temeljenu na vokabularu od 200 000 riječi.
 
-Klasifikator relevantnosti predloška za članak izvorno je primao vektor $f$ čije su vrijednosti kvadrirane razlike komponenata vektora predloška $q$ i vektora članka $a$: $f_i = (q_i - a_i)^2$. Predložak i članak reprezentirani su konkatenacijom 200 000 tf-idf i 300 \textit{word2vec} značajki. Boljom se pokazala reprezentacija koja na opisani vektor $f$ konkatenira identični vektor dobiven za predložak i nasumično odabrani članak čije su kategorija i sekcija točne. Ovaj klasifikator trenira se uz poznatu kategoriju/sekciju.
+Klasifikator relevantnosti predloška za članak izvorno je primao vektor $f$ čije su vrijednosti kvadrirane razlike komponenata vektora predloška $q$ i vektora članka $a$: $f_i = (q_i - a_i)^2$. Predložak i članak reprezentirani su konkatenacijom 200 000 tf-idf i 300 \textit{word2vec} značajki. Boljom se pokazala reprezentacija koja na opisani vektor $f$ dodatno konkatenira identični vektor dobiven od predloška i nasumično odabranog članka čije su kategorija i sekcija točne. Ovaj klasifikator trenira se uz poznatu kategoriju/sekciju.
 
-\section{Primjeri}
+\section{Primjeri pitanja}
 \begin{itemize}
 	\item asdansdaso
 \end{itemize}
 
 \section{Evaluacija}
-Autori izvješćuju o postignutih 83\% točnosti klasifikatora kategorije i 95\% točnosti klasifikatora sekcije. Budući da je problem ovdje sveden na dohvaćanje informacija \engl{information retrieval - IR}, kao mjera stvarnih performansi sustava uzima se analiza preciznosti za rastuće vrijednosti odziva. Kao temelj za usporedbu \engl{baseline} uzet je model koji ne radi klasifikaciju relevantnosti, već kao prikladna vraća sva pitanja iz zaključene kategorije/sekcije. Ovdje valja istaknuti kako pogrešno određena sekcija nekog teksta ne povlači nužno pogrešnu klasifikaciju relevantnosti. To je rezultat sličnosti pojedinih sekcija i činjenice da pojedino pitanje napisano za jednu sekciju može biti relevantno za tekst neke druge sekcije.
+Autori izvješćuju o postignutih 83\% točnosti klasifikatora kategorije i 95\% točnosti klasifikatora sekcije. Budući da je problem kroz dohvaćanje relevantnih pitanja iz baze sveden na dohvaćanje informacija \engl{information retrieval - IR}, kao mjera stvarnih performansi sustava uzima se analiza preciznosti za rastuće vrijednosti odziva. Istaknuto je da pri odzivu od 70\% preciznost prelazi 85\%. Kao temelj za usporedbu \engl{baseline} uzet je model koji ne radi klasifikaciju relevantnosti, već kao prikladna vraća sva pitanja iz zaključene kategorije/sekcije. Ovdje valja istaknuti kako pogrešno određena sekcija nekog teksta ne povlači nužno pogrešnu klasifikaciju relevantnosti. To je rezultat sličnosti pojedinih sekcija i činjenice da pitanje napisano za jednu sekciju može biti relevantno za drugu.
 
 \section{Distinkcije}
 Ovaj rad razlikuje se od ostalih dvaju po nekoliko stvari:
@@ -64,17 +67,109 @@ Ovaj rad razlikuje se od ostalih dvaju po nekoliko stvari:
 	\item ograničeni vokabular pitanja
 	\item korištenje IR-pristupa i prikladne metrike
 	\item nepostojanje točnih odgovora iz čega proizlazi otežana primjena u evaluaciji znanja
+	\item testiranje otežano jer obuhvaća veći ljudski posao: za dane članke i njihove segmente radi se dohvaćanje predložaka iz baze i kvalitetu dohvaćanja evaluiraju novi radnici %TODO ispada da je ovo prisutno i u SRL based radu - jel moguće da samo kod deep modela nije???
 \end{itemize}
 
 \chapter{Pristup automatskom generiranju domenski neovisnih pitanja temeljen na semantičkim ulogama}
+\section{Način rada}
+Ovaj rad predstavlja sustav koji kreira pitanje za svaku semantičku ulogu u rečenici preoblikovanjem temeljenim na gramatičkim i heurističkim pravilima.
+
+Sustav prima polazni tekst nad kojim napravi rečeničnu segmentaciju i tokenizaciju. Koristi se alat OpenNLP za označavanje vrste riječi \engl{POS tagging - part of speech tagging} i sustav SENNA za označavanje semantičkih uloga \engl{SRL - semantic role labeling}. Oba su alata modeli strojnog učenja. SENNA dodjeluje oznake kao u Propbanku: predikat i okolni argumenti te modifikatori. Pregled ovih oznaka dan je u tablici \ref{tab:propbank}.
+
+\begin{table}[h]
+	\begin{center}
+		\begin{tabular}{ |c|c| } 
+			\hline
+			\textbf{Oznaka} & \textbf{Uloga}\\
+			\hline
+			A0 & proto-agent (često gramatički subjekt)\\
+			\hline
+			A1 & proto-pacijent (često gramatički objekt)\\
+			\hline
+			A2 & instrument, atribut, primanje, količina itd.\\
+			\hline
+			A3 & početna točka ili stanje\\
+			\hline
+			A4 & krajnja točka ili stanje\\
+			\hline
+			AM-LOC & mjesto\\
+			\hline
+			AM-DIR & smjer\\
+			\hline
+			AM-TMP & vrijeme\\
+			\hline
+			AM-CAU & uzrok\\
+			\hline
+			AM-PNC & svrha\\
+			\hline
+			AM-MNR & način\\
+			\hline
+			AM-EXT & doseg\\
+			\hline
+			AM-DIS & izlaganje\\
+			\hline
+			AM-ADV & prilog\\
+			\hline
+			AM-MOD & modalni glagol\\
+			\hline
+			AM-NEG & negacija\\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Pregled semantičkih uloga u Propbanku prema \cite{flor2018semantic}}
+	\label{tab:propbank}
+\end{table}
+
+Važan korak u procesuiranju ulazne rečenice jest detekcija i analiza glagolske grupe. Ona se pronalazi na temelju oznaka vrste riječi, kao i leksičkih uzoraka. Važno je istaknuti da ne vrijedi jednakost glagolske grupe i predikata koji vraća SENNA. Uvodi se korektivno pravilo kojim se na temelju saznanja o glagolskoj grupi odbacuje npr.\ \textit{[\textsubscript{A0} Joe] [\textsubscript{Predicate} has] [\textsubscript{A1} sold his house]}, a prihvaća se \textit{[\textsubscript{A0} Joe] has [\textsubscript{Predicate}sold] [\textsubscript{A1} his house]}
+
+Za generiranje wh-pitanja razmatraju se glavni argumenti A0, A1, A2, A3, A4 i modifikatori AM-TMP, AM-MNR, AM-CAU, AM-LOC, AM-PNC, AM-DIR. Ovaj proces naziva se fokusiranje i određuje točan odgovor. Na temelju tog odabira radi se odabir upitne riječi. Iako na prvi pogled odabir modifikatora AM-TMP povlači korištenje riječi \textit{When}, to nije slučaj. Primjer su rečenice \textit{[\textsubscript{A0}Peter] called [\textsubscript{AM-TMP} for six hours]} i \textit{[\textsubscript{A0}Peter] called [\textsubscript{AM-TMP} every day].}. Postojanje riječi poput \textit{every} ili \textit{each} ukazuje na korištenje \textit{How often}, dok riječ \textit{for} ukazuje na \textit{How long}. Dodatno, odluka o prikladnosti \textit{who} ili \textit{what} radi se usporedbom argumenta s popisom vlastitih imena i imenica karakterističnih za osobe (npr.\ \textit{king}, \textit{player}).
+
+Za generiranje da/ne pitanja odabiru se predikati koji nisu infinitivi ili gerundi. Po potrebi se modificira redoslijed riječi i dodaje se riječ \textit{do/does}, npr. \textit{He ate quickly} daje \textit{Did he eat quickly?} Dodatan aspekt u generiranju pitanja ove vrste predstavlja postupak \textit{pozitivizacije} koji uključuje uklanjanje negacije u pitanju te invertiranje odgovora. Npr.\ za rečenicu \textit{Johnny didn't know the song} i predviđeni odgovor \textit{Yes}, generira se pitanje \textit{Did Johnny know the song?} i odgovor \textit{No}.
+
+\section{Podaci}
+Iz triju uvodnih paragrafa članaka s Wikipedije i dvaju kratkih članaka s jedne edukativne stranice izvučena je 171 rečenica duljine od barem 5 riječi koja nema uvjetnu konstrukciju (\textit{if...then}). Za svaki predikat svake rečenice generira se da/ne pitanje - njih ukupnno 236. Za glavne argumente i za modifikatore generiraju se wh-pitanja. Takvih pitanja generirano je 654.
+
+\section{Učenje}
+Izgradnja sustava u ovom radu ne zahtijeva treniranje jer ne gradi model strojnog učenja. Nešto dublja filozofska tvrdnja bila bi da se učenjem u ovom slučaju može smatrati stjecanje gramatičkog znanja i iskustva autora rada koje su ugradili u pravila na kojima je sustav temeljen.
+
+\section{Primjeri pitanja}
+
+\section{Evaluacija}
+Dvoje ljudi obavilo je označavanje generiranih pitanja kroz tri aspekta: gramatička točnost (1-5), semantička točnost (koliko dobro pitanje razumije značenje izvorne rečenice; 1-5), relevantnost (koliko je pitanje vezano uz informacije u izvornoj rečenici; 0-3). Na svim ljestvicama najmanji broj označava najlošiju, a najveći najbolju ocjenu. Dodatno, napravljena je ukupna metrika čiji iznos odgovara zbroju prethodnih triju. Pokazalo se da s duljinom polazne rečenice pada i njena obuhvaćenost pravilima te samim time kvaliteta pitanja.
+
+\section{Distinkcije}
+Za razliku od drugih opisanih pristupa, ovaj pristup:
+\begin{itemize}
+	\item ne gradi model strojnog učenja, ali koristi gotove alate temeljene na strojnom učenju
+	\item lakše se modificira (nije ovisan o treniranju)
+	\item postavlja pitanja temeljena na jednoj rečenici polaznog teksta
+\end{itemize}
+
+\chapter{Prikupljanje parova pitanje-odgovor temeljenih na odlomcima na Wikipediji}
+\section{Način rada}
+Ovaj rad opisuje duboki model koji na ulaz povratne neuronske mreže dovodi znanje o koreferencama u pripadnom kontekstu. Naslovom rada želi se istaknuti da se generirana pitanja ne temelje na pojedinačnoj rečenici već na cijelom odlomku i da se analiziraju tekstovi s Wikipedije.
+
+\section{Podaci}
+
+\section{Učenje}
+
+\section{Primjeri pitanja}
+
+\section{Evaluacija}
+
+
+\section{Distinkcije}
+Za razliku od prethodno opisanih radova, ovdje:
+\begin{itemize}
+	\item jedna rečenica donosi samo jedno pitanje
+	\item navodi se alternativa ljudskom evaluiranju izlaza
+\end{itemize}
 
 \chapter{Zaključak}
-Iako nepotpuno prikladan za korištenje u studentskoj evaluaciji, pristup u \cite{labutov2015deep} predstavlja inovativan i zanimljiv radni okvir za druge jezične primjene, kao primjerice sažimanje \engl{summarization}.
+Iako zbog nedostatka točnih odgovora nepotpuno prikladan za korištenje u evaluaciji studenata, pristup u \cite{labutov2015deep} predstavlja inovativan i zanimljiv radni okvir za druge jezične primjene, kao npr.\ sažimanje \engl{summarization}. Prostor za napredak leži u korištenju kompleksnijih značajki, kao i klasifikacijskog modela kompleksnijeg od logističke regresije.
+Evaluacija je u ovom području otežana jer zahtijeva ljudski posao procjene kvalitete izlaza sustava.
 
 \bibliography{literatura}
 \bibliographystyle{fer}
-
-\chapter{Sažetak}
-Sažetak.
 
 \end{document}
