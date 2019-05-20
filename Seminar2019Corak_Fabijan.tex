@@ -27,7 +27,7 @@ Cilj ovog seminara nije analiza rezultata pojedinih radova, već nekome tko u ov
 \chapter{Duboka pitanja bez dubokog razumijevanja}
 \section{Način rada}
 
-Naslovu unatoč, pristup opisan u radu \cite{labutov2015deep} nema veze s dubokim učenjem. Pitanja su duboka jer proizlaze iz čitavog predočenog teksta, a bez razumijevanja jer nastaju prema generičnim predlošcima i sâm sustav zapravo ne zna na njih odgovoriti. Pojednostavljeni prikaz učenja i uporabe sustava nalazi se na slici \ref{fig:deep1}.
+Naslovu unatoč, pristup opisan u radu \cite{labutov2015deep} nema veze s dubokim učenjem. Pitanja su duboka jer proizlaze iz čitavog predočenog teksta, a bez razumijevanja jer nastaju prema generičnim predlošcima i sâm sustav zapravo ne zna na njih odgovoriti. Pojednostavljeni prikaz izgradnje i uporabe sustava nalazi se na slici \ref{fig:deep1}.
 
 \begin{figure}[h]
 	\centering
@@ -39,10 +39,13 @@ Naslovu unatoč, pristup opisan u radu \cite{labutov2015deep} nema veze s duboki
 Sustav prima tekst o nekomu/nečemu i istaknut jedan njegov segment. Istaknuti segment oznaka je da se pitanja trebaju generirati upravo iz njega. Prvo se na temelju čitavog teksta određuje kojoj od osam kategorija pripada. Potom se određuje kojoj od pedeset sekcija unutar kategorije pripada istaknuti segment. Zatim se iz baze dohvaćaju predlošci napisani upravo za tu kategoriju odnosno sekciju te se za svaki predložak donosi odluka tvori li on pitanje relevantno za polazni tekst.
 
 \section{Podaci}
+
 Razmatrani podaci su članci s Wikipedije i njihova pripadnost određenim grupama prema sustavu Freebase. Autori su na temelju takve raspodjele s mnogo kategorija napravili svoju od ukupno osam: \textit{osoba, mjesto, događaj, organizacija, umjetnost, znanost, zdravlje, religija}. Ovim kategorijama obuhvaćeno je 78\% svih članaka. Ontologija spomenuta na slici \ref{fig:deep1} skup je Kartezijevih produkata pojedinih kategorija i svih sekcija (podnaslova) iz članaka koji pripadaju toj kategoriji. Npr.\ od kategorije \textit{osoba} i sekcija njenih članaka kao što su \textit{poslovna karijera} i \textit{politička karijera} dobiva se \textit{\{(osoba, poslovna karijera), (osoba, politička karijera)\}}. Uzimajući u obzir pokrivenost članaka, izabrano je pedeset sekcija svake kategorije i za svaku je napravljen opisani Kartezijev produkt. Svi produkti zajedno čine ontologiju.
 
+\subsection{Predlošci pitanja}
 Predložak pitanja podrazumijeva upitnu rečenicu u koju se naknadno umeće ime entiteta koji je središnja tema članka, npr.: \textit{Who were the key influences on \_\_\_\_ in their childhood?} Za generiranje predložaka uposleno je 78 ljudi na sustavu \textit{Amazon Mechanical Turk}. Pri stvaranju predložaka radnici nisu imali uvid u konkretne članke, već samo to za koju ih kategoriju odnosno sekciju trebaju napisati. Generirano je 995 različitih predložaka. Važno je istaknuti da su generirani predlošci samo za kategorije \textit{osoba} i \textit{mjesto}, čime je smanjen posao radnika, a valjanost evaluacije pretpotavlja se nije značajno narušena zbog toga što članci iz tih dviju kategorija obuhvaćaju gotovo 50\% svih članaka na Wikipediji. Dodatnih 229 radnika angažirano je za ocjenu relevantnosti. Prikupljeno je 4439 trojki \textit{(pitanje, članak, relevantnost)}.
 
+\subsection{Testni podaci}
 Prethodno opisani podaci služe za treniranje, dok je za testiranje s Wikipedije uzorkovano 12 članaka za koje je klasifikator vraća oznaku \textit{osoba} ili \textit{mjesto} i za svaki njihov segment (sekciju) dohvaćeno je do 20 pitanja poredanih prema relevantnosti. Dodatna 62 radnika sa sustava \textit{Amazon Mechanical Turk} napravila su 256 novih trojki \textit{(pitanje, članak, relevantnost)}.
 
 \section{Učenje}
@@ -66,8 +69,7 @@ Ovaj rad razlikuje se od ostalih dvaju po nekoliko stvari:
 	\item svakom novom predočenom tekstu pristupa s praktički istim pitanjima koje minimalno prilagođava (dopunom predložaka)
 	\item ograničeni vokabular pitanja
 	\item korištenje IR-pristupa i prikladne metrike
-	\item nepostojanje točnih odgovora iz čega proizlazi otežana primjena u evaluaciji znanja
-	\item testiranje otežano jer obuhvaća veći ljudski posao: za dane članke i njihove segmente radi se dohvaćanje predložaka iz baze i kvalitetu dohvaćanja evaluiraju novi radnici %TODO ispada da je ovo prisutno i u SRL based radu - jel moguće da samo kod deep modela nije???
+	\item nepostojanje točnih odgovora iz čega proizlazi otežana primjena u evaluaciji znanja.
 \end{itemize}
 
 \chapter{Pristup automatskom generiranju domenski neovisnih pitanja temeljen na semantičkim ulogama}
@@ -142,27 +144,76 @@ Za razliku od drugih opisanih pristupa, ovaj pristup:
 \begin{itemize}
 	\item ne gradi model strojnog učenja, ali koristi gotove alate temeljene na strojnom učenju
 	\item lakše se modificira (nije ovisan o treniranju)
-	\item postavlja pitanja temeljena na jednoj rečenici polaznog teksta
+	\item postavlja pitanja temeljena na jednoj rečenici polaznog teksta.
 \end{itemize}
 
-\chapter{Prikupljanje parova pitanje-odgovor temeljenih na odlomcima na Wikipediji}
+\chapter{Prikupljanje parova pitanja i odgovora temeljenih na odlomcima s Wikipedije}
 \section{Način rada}
-Ovaj rad opisuje duboki model koji na ulaz povratne neuronske mreže dovodi znanje o koreferencama u pripadnom kontekstu. Naslovom rada želi se istaknuti da se generirana pitanja ne temelje na pojedinačnoj rečenici već na cijelom odlomku i da se analiziraju tekstovi s Wikipedije.
+Ovaj rad opisuje duboki model koji na ulaz povratne neuronske mreže dovodi znanje o koreferencama u pripadnom kontekstu. Naslovom rada želi se istaknuti da se generirana pitanja ne temelje na pojedinačnoj rečenici već na cijelom odlomku i da se analiziraju tekstovi s Wikipedije. Ulaz u sustav predstavljaju polazna rečenica i njen kontekst. Rad sustava podijeljen je u nekoliko koraka.
+
+\subsection{Određivanje odgovora}
+Na ulaz se dovodi polazna rečenica. Na izlazu se nalaze BIO-označeni ulazni tokeni (B\_ANS - početak odgovora, I\_ANS - nepočetni dio odgovora, O - izvan odgovora). Primjer ovoga je u drugom redu tablice \ref{tab:marked_sentence}.
+
+\subsection{Određivanje koreferenci}
+Ovom dijelu sustava potrebni su polazna rečenica i njoj prethodeći kontekst. Za grupiranje koreferentnih entiteta koristi se gotov model opisan u \cite{clark2016improving}. Taj model vraća mjeru međusobne koreferentnosti svakog para tokena i grupira ih. Za svaku zamjenicu polazne rečenice određuje se pogodna koreferenca iz konteksta i umeće u izvornu rečenicu odmah nakon zamjenice. Primjer je vidljiv u trećem redu tablice \ref{tab:marked_sentence}: drugi i treći token umetnuti su kao antecedenti prvog.
+
+\begin{table}[h]
+	\small
+%	\begin{center}
+		\begin{tabular}{|c|ccccccccccc|}
+			\hline
+			word & they & the & panthers & defeated & the & arizona & cardinals & 49 & - & 15 & ...\\
+			ans. feature & O & O & O & O & B\_ANS & I\_ANS & I\_ANS & O & O & O & ...\\
+			coref.feature & B\_PRO & B\_ANT & I\_ANT & O & O & O & O & O & O & O & ...\\
+			\hline
+		\end{tabular}
+%	\end{center}
+	\caption{Primjer označene rečenice s umetnutom koreferencom}
+	\label{tab:marked_sentence}
+\end{table}
+
+\subsection{Generiranje pitanja}
+Kodirajući dio mreže (koder) učitava slijed vektora koji su konkatenacija: ugradbene \engl{embedded} reprezentacije tokena, oznake je li token dio odgovora te oznake koreference: $f = (w, a, c)$. Dekodirajući dio mreže (dekoder) na ulaz prima jedan vektor koji dobiva iz kodirajućeg dijela i na temelju njega generira izlazni niz vektora koji predstavljaju riječi generiranog pitanja.
 
 \section{Podaci}
+Koristi se skup podataka SQuAD koji se sastoji od polaznih tekstova s Wikipedije, ljudski odabranih odgovora i postavljenih pitanja (preko 100 000 parova). Primjenom opisanog pristupa nad 10 000 najpopularnijih članaka Wikipedije dobiven je skup od milijun parova pitanje-odgovor. Za ljudsku ocjenu odabrano je oko 70 parova iz testnog skupa.
 
 \section{Učenje}
+U ekstrakciji odgovora korišten je BiLSTM-CRF pristup prikazan na slici \ref{fig:bilstm-crf}. Umjesto minimizacije pogreške unakrsne entropije za svaki ulazni token, ukupni  izlaz dvosmjerne povratne mreže dovodi se na CRF koji izravno modelira izglednost cijelog niza. Vektor značajki koji pritom predstavlja svaki token konkatenacija je karakternih unigrama, ugradbenih značajki te informacija o tome je li riječ o imenovanom entitetu (NER).
+
+\begin{figure}
+	\centering
+	\includegraphics[width=6cm]{bilstm_crf.png}
+	\caption{BiLSTM-CRF struktura prema \cite{huang2015bidirectional}}%TODO
+	\label{fig:bilstm-crf}
+\end{figure}
+
+Izlaz ovog dijela sustava koristi se kao ulaz u koder ($a_i$ dio vektora $f_i = (w_i, a_i, c_i)$). Koder radi kao dvosmjerna mreža dugog kratkoročnog pamćenja (BiLSTM network) čime proizvodi dva niza vektora skrivenih stanja: $\overrightarrow{h}$ i $\overleftarrow{h}$. Konačno skriveno stanje dobiva se konkatenacijom: $h_i = (\overrightarrow{h_i}, \overleftarrow{h_i})$.
+
+Inovativnost ovog rada leži u posebnom načinu obrade pridijeljenih pozicijskih značajki koreferenci (B\_PRO, B\_ANT). Značajka kodirana kao $c_i$ prevodi se u $d_i$ prema formuli: $d_i = c_i \odot ReLU(W_a c_i + W_b score_i + b)$. Pritom su $W_i$ i $b$ parametarske matrice odnosno vektori koje se uče, a $score_i$ je vektor mjera koreferentnosti između $i$-tog tokena i antecedenata. Može se reći da se značajka koreferentnosti ovime profinjuje. Ovaj korak na slici \ref{fig:gated_coref_nqg} nalazi se u donjem lijevom kutu.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=16cm]{gated_coref_nqg.png}
+	\caption{Shematski prikaz korištene mreže}
+	\label{fig:gated_coref_nqg}
+\end{figure}
+
+Dekoder je ostvaren kao LSTM mreža koja računa skriveno stanje na temelju prethodne generirane riječi i prethodnog skrivenog stanja. Koristi se mehanizam pažnje \engl{attention mechanism} kao i mogućnost kopiranja riječi iz polazne rečenice \engl{copy mechanism}, što pomaže u slučaju da pitanje treba sadržavati neku rijetku/nepoznatu riječ.
 
 \section{Primjeri pitanja}
 
 \section{Evaluacija}
+Vrednovanje rada na testnom skupu može se raditi prema nekoliko metrika. Jedno od poduzetih mjerenja je ljudsko ocjenjivanje 70ak parova pitanja i odgovora prema njihovoj gramatičnosti, smislu i odgovorivosti, kao i u analizi prethodnog rada \cite{flor2018semantic}.
 
+Mjere koje ne uključuju ljudsko ocjenjivanje izlaza su BLEU \cite{papineni2002bleu} i METEOR \cite{denkowski2014meteor}, koje uspoređuju generirano i očekivano pitanje. BLEU mjeri prosječnu preciznost u n-gramima, a METEOR uspoređuje sastavnice pitanja na nekoliko razina (identične riječi, jednakost korijena riječi, sinonimija, jednakost fraza).
 
 \section{Distinkcije}
 Za razliku od prethodno opisanih radova, ovdje:
 \begin{itemize}
 	\item jedna rečenica donosi samo jedno pitanje
 	\item navodi se alternativa ljudskom evaluiranju izlaza
+	\item jedna od metoda vrednovanja je i evaluacija treniranjem: neki postojeći model za davanje odgovora trenira se na generiranim pitanjima i testira se njegova izvedba davanja odgovora
 \end{itemize}
 
 \chapter{Zaključak}
