@@ -208,6 +208,8 @@ Vrednovanje rada na testnom skupu može se raditi prema nekoliko metrika. Jedno 
 
 Mjere koje ne uključuju ljudsko ocjenjivanje izlaza su BLEU \cite{papineni2002bleu} i METEOR \cite{denkowski2014meteor}, koje uspoređuju generirano i očekivano pitanje. BLEU mjeri prosječnu preciznost u n-gramima, a METEOR uspoređuje sastavnice pitanja na nekoliko razina (identične riječi, jednakost korijena riječi, sinonimija, jednakost fraza).
 
+Ovaj model bolji je od temeljnih modela s kojima se uspoređuje, pogotovo na probranom skupu pitanja koja iziskuju referiranje na kontekst.
+
 \section{Distinkcije}
 Za razliku od prethodno opisanih radova, ovdje:
 \begin{itemize}
@@ -217,8 +219,9 @@ Za razliku od prethodno opisanih radova, ovdje:
 \end{itemize}
 
 \chapter{Zaključak}
-Iako zbog nedostatka točnih odgovora nepotpuno prikladan za korištenje u evaluaciji studenata, pristup u \cite{labutov2015deep} predstavlja inovativan i zanimljiv radni okvir za druge jezične primjene, kao npr.\ sažimanje \engl{summarization}. Prostor za napredak leži u korištenju kompleksnijih značajki, kao i klasifikacijskog modela kompleksnijeg od logističke regresije.
-Evaluacija je u ovom području otežana jer zahtijeva ljudski posao procjene kvalitete izlaza sustava.
+Iako zbog nedostatka točnih odgovora nepotpuno prikladan za korištenje u evaluaciji studenata, pristup u \cite{labutov2015deep} predstavlja inovativan i zanimljiv radni okvir za druge jezične primjene, kao npr.\ sažimanje \engl{summarization}. Prostor za napredak leži u korištenju kompleksnijih značajki, kao i klasifikacijskog modela kompleksnijeg od logističke regresije. Pristup Iako nov, rad \cite{flor2018semantic} predstavlja stariji pristup temeljen na pravilima, koji svejedno ne zaostaje za dubokim pristupom. Međutim oblikovanje pravila iziskuje jezičnu vještinu veću od prosjeka. Duboki model u \cite{du2018harvesting} dio je suvremenog trenda u obradi prirodnog jezika. Evaluacija je u ovom području otežana jer se može oslanjati na ljudski posao procjene kvalitete izlaza sustava.
+
+Iz perspektive sastavljača kviz-pitanja, tri analizirana rada ne djeluju uvjerljivo u zamjenjivanju ljudskog smišljanja pitanja. Pitanja koja zahtijevaju opisne odgovore kao u primjeru \cite{labutov2015deep} nipošto nisu prikladna, a odveć jednosmjerna, tzv.\ znaš - ne znaš pitanja, dobri sastavljači izbjegavaju stavljati u kvizove. Dobra pitanja kao temelj često imaju i više od jedne rečenice, pa i više od jednog paragrafa, a nekad se baziraju i na uzorcima koji prelaze jedan članak. Potencijalni prostor za napredak mogao bi biti u analizi ontologije izgrađene na velikom korpusu znanja.
 
 \bibliography{literatura}
 \bibliographystyle{fer}
