@@ -18,11 +18,11 @@
 \tableofcontents
 
 \chapter{Uvod}
-Ovaj seminarski rad predstavlja pregled područja domenski neovisnog automatskog generiranja pitanja na engleskom jeziku. Riječ je o postupku ekstrakcije pitanja iz nekog polaznog teksta bez aktivnog ljudskog posredovanja. Kome ovo može koristiti? Nastavnicima u evaluaciji studenata, kao i samim studentima u samoprovjeri \cite{labutov2015deep}, dijaloškim sustavima \cite{flor2018semantic} te autorima kviz-pitanja.
+Ovaj seminarski rad predstavlja pregled područja domenski neovisnog strojnim učenjem poduprtog generiranja pitanja na engleskom jeziku. Riječ je o postupku ekstrakcije pitanja iz nekog polaznog teksta bez aktivnog ljudskog posredovanja. Kome ovo može koristiti? Nastavnicima u evaluaciji studenata, kao i samim studentima u samoprovjeri \cite{labutov2015deep}, kreatorima dijaloških sustava \cite{flor2018semantic} te autorima kviz-pitanja.
 
-Ovisno o veličini polaznog teksta, rješenja na ovom području mogu se podijeliti na pristupe \textit{izjavna rečenica} - \textit{upitna rečenica} i \textit{paragraf} - \textit{upitna rečenica}. Problem automatskog generiranja pitanja svodi se dakle na prevođenje jednog u drugo. Osvrt je načinjen kroz analizu triju različitih pristupa opisanih u radovima \cite{du2018harvesting}, \cite{flor2018semantic} i \cite{labutov2015deep}. Naslovi nrednih triju poglavlja hrvatski su prijevodi njihovih izvornih imena. Za svaki rad opisani su: način rada, podaci, učenje, primjeri pitanja, evaluacija rezultata te distinkcije.
-Postupak evaluacije različit je od uobičajenog jer za isti polazni tekst ne postoji jedinstveno točno postavljeno pitanje.
-Cilj ovog seminara nije analiza rezultata pojedinih radova, već nekome tko u ovom području nema iskustva dati uvid u moguće pristupe u oblikovanje problema i mjerenje performani.
+Ovisno o veličini polaznog teksta, rješenja na ovom području mogu se podijeliti na pristupe \textit{izjavna rečenica} - \textit{upitna rečenica} i \textit{paragraf} - \textit{upitna rečenica}. Problem automatskog generiranja pitanja svodi se dakle na prevođenje jednog u drugo. Osvrt je načinjen kroz analizu triju različitih pristupa opisanih u radovima \cite{du2018harvesting}, \cite{flor2018semantic} i \cite{labutov2015deep}. Naslovi narednih triju poglavlja hrvatski su prijevodi izvornih imena radova koje opisuju. Za svaki rad opisani su: način rada, podaci, učenje, primjeri pitanja, evaluacija rezultata te distinkcije.
+
+Cilj ovog seminara nije analiza rezultata pojedinih radova, već nekome tko u ovom području nema iskustva dati uvid u moguće pristupe u oblikovanju problema i mjerenju performansi.
 
 \chapter{Duboka pitanja bez dubokog razumijevanja}
 \section{Način rada}
@@ -56,9 +56,18 @@ Prva vrsta modela kao ulaz prima tf-idf reprezentaciju teksta temeljenu na vokab
 Klasifikator relevantnosti predloška za članak izvorno je primao vektor $f$ čije su vrijednosti kvadrirane razlike komponenata vektora predloška $q$ i vektora članka $a$: $f_i = (q_i - a_i)^2$. Predložak i članak reprezentirani su konkatenacijom 200 000 tf-idf i 300 \textit{word2vec} značajki. Boljom se pokazala reprezentacija koja na opisani vektor $f$ dodatno konkatenira identični vektor dobiven od predloška i nasumično odabranog članka čije su kategorija i sekcija točne. Ovaj klasifikator trenira se uz poznatu kategoriju/sekciju.
 
 \section{Primjeri pitanja}
-\begin{itemize}
-	\item asdansdaso
-\end{itemize}
+Iz sekcije \textit{Honours} članka o jednom igraču kriketa zaključena je sekcija \textit{Later Life}. Međutim odabrani predložak upotpunjen igračevim imenom dao je pitanje ispravno klasificirano kao relevantno za taj tekst:
+\begin{quotation}
+	\textit{What accomplishments characterized the later career of Colin Cowdrey?}
+\end{quotation}
+Dakle, generirano pitanje kao konačan izlaz sustava pokazuje robustnost na eventualnu pogrešku u klasifikaciji sekcije.
+
+Iz teksta o djelima (sekcija \textit{Work}) jednog američkog slikara izveden je zaključak da se radi o paragrafu reakcija na njegova djela (sekcija \textit{Reception}). Zbog toga je iz dijela baze za sekciju \textit{Reception} u razmatranje uzet sljedeći predložak (s uvrštenim slikarovim imenom):
+\begin{quotation}
+	\textit{What type of reaction did Thornton Dial receive?}
+\end{quotation}
+
+On je međutim prema klasifikatoru relevantnosti koji u obzir uzima predložak i tekst sekcije članka s Wikipedije ocijenjen kao irelevantan za taj tekst, a službeni ocjenjivači skupa podataka smatraju da pitanje ipak jest relevantno. Izvorni tekst tog dijela članka nije priložen niti ovdje, niti u izvornom radu, ali do njega se može doći izravno na Wikipediji.
 
 \section{Evaluacija}
 Autori izvješćuju o postignutih 83\% točnosti klasifikatora kategorije i 95\% točnosti klasifikatora sekcije. Budući da je problem kroz dohvaćanje relevantnih pitanja iz baze sveden na dohvaćanje informacija \engl{information retrieval - IR}, kao mjera stvarnih performansi sustava uzima se analiza preciznosti za rastuće vrijednosti odziva. Istaknuto je da pri odzivu od 70\% preciznost prelazi 85\%. Kao temelj za usporedbu \engl{baseline} uzet je model koji ne radi klasifikaciju relevantnosti, već kao prikladna vraća sva pitanja iz zaključene kategorije/sekcije. Ovdje valja istaknuti kako pogrešno određena sekcija nekog teksta ne povlači nužno pogrešnu klasifikaciju relevantnosti. To je rezultat sličnosti pojedinih sekcija i činjenice da pitanje napisano za jednu sekciju može biti relevantno za drugu.
@@ -135,6 +144,25 @@ Iz triju uvodnih paragrafa članaka s Wikipedije i dvaju kratkih članaka s jedn
 Izgradnja sustava u ovom radu ne zahtijeva treniranje jer ne gradi model strojnog učenja. Nešto dublja filozofska tvrdnja bila bi da se učenjem u ovom slučaju može smatrati stjecanje gramatičkog znanja i iskustva autora rada koje su ugradili u pravila na kojima je sustav temeljen.
 
 \section{Primjeri pitanja}
+Na temelju rečenice:
+\begin{quote}
+	\textit{The particles from the Sun also carry an electric charge.}
+\end{quote}
+generira se da/ne pitanje:
+\begin{quote}
+	\textit{Do the particles from the Sun carry an electric charge?}
+\end{quote}
+Ono je ocijenjeno ocjenama: gramatičnost 5/5, smislenost 5/5 i relevantnost 3/3.
+
+S druge strane, rečenica:
+\begin{quote}
+	\textit{Deep below is a place called the magma chamber.}
+\end{quote}
+iznjedruje pitanje:
+\begin{quote}
+	\textit{Did a place call the magma chamber?}
+\end{quote}
+koje je dobilo ocjene: gramatičnost 4.5/5, smislenost 1.5/5, relevantnost 2.5/3.
 
 \section{Evaluacija}
 Dvoje ljudi obavilo je označavanje generiranih pitanja kroz tri aspekta: gramatička točnost (1-5), semantička točnost (koliko dobro pitanje razumije značenje izvorne rečenice; 1-5), relevantnost (koliko je pitanje vezano uz informacije u izvornoj rečenici; 0-3). Na svim ljestvicama najmanji broj označava najlošiju, a najveći najbolju ocjenu. Dodatno, napravljena je ukupna metrika čiji iznos odgovara zbroju prethodnih triju. Pokazalo se da s duljinom polazne rečenice pada i njena obuhvaćenost pravilima te samim time kvaliteta pitanja.
@@ -184,7 +212,7 @@ U ekstrakciji odgovora korišten je BiLSTM-CRF pristup prikazan na slici \ref{fi
 \begin{figure}
 	\centering
 	\includegraphics[width=6cm]{bilstm_crf.png}
-	\caption{BiLSTM-CRF struktura prema \cite{huang2015bidirectional}}%TODO
+	\caption{BiLSTM-CRF struktura prema \cite{huang2015bidirectional}}
 	\label{fig:bilstm-crf}
 \end{figure}
 
@@ -202,11 +230,29 @@ Inovativnost ovog rada leži u posebnom načinu obrade pridijeljenih pozicijskih
 Dekoder je ostvaren kao LSTM mreža koja računa skriveno stanje na temelju prethodne generirane riječi i prethodnog skrivenog stanja. Koristi se mehanizam pažnje \engl{attention mechanism} kao i mogućnost kopiranja riječi iz polazne rečenice \engl{copy mechanism}, što pomaže u slučaju da pitanje treba sadržavati neku rijetku/nepoznatu riječ.
 
 \section{Primjeri pitanja}
+Na temelju teksta:
+\begin{quotation}
+	\textit{The elizabethan navigator, sir francis drake
+	was born in the nearby town of tavistock and was the
+	mayor of plymouth. ... . he died of dysentery in 1596 off the coast of puerto rico.}
+\end{quotation}
+očekivano pitanje iz skupa podataka:
+\begin{quote}
+	\textit{In what year did Sir Francis Drake die ?}
+\end{quote}
+Usporedni model koji doduše koristi kontekst, ali ne rafinirani, daje pitanje:
+\begin{quote}
+	\textit{When did he die ?}
+\end{quote}
+S druge strane, središnji model ovoga rada, oslanjajući se na profinjeni kontekst, daje:
+\begin{quote}
+	\textit{When did sir francis drake die ?}
+\end{quote}
 
 \section{Evaluacija}
-Vrednovanje rada na testnom skupu može se raditi prema nekoliko metrika. Jedno od poduzetih mjerenja je ljudsko ocjenjivanje 70ak parova pitanja i odgovora prema njihovoj gramatičnosti, smislu i odgovorivosti, kao i u analizi prethodnog rada \cite{flor2018semantic}.
+Vrednovanje rada na testnom skupu može se raditi prema nekoliko metrika. Jedno od poduzetih mjerenja je ljudsko ocjenjivanje 70-ak parova pitanja i odgovora prema njihovoj gramatičnosti, smislu i odgovorivosti, slično kao u analizi prethodnog rada \cite{flor2018semantic}.
 
-Mjere koje ne uključuju ljudsko ocjenjivanje izlaza su BLEU \cite{papineni2002bleu} i METEOR \cite{denkowski2014meteor}, koje uspoređuju generirano i očekivano pitanje. BLEU mjeri prosječnu preciznost u n-gramima, a METEOR uspoređuje sastavnice pitanja na nekoliko razina (identične riječi, jednakost korijena riječi, sinonimija, jednakost fraza).
+Mjere koje ne uključuju ljudsko ocjenjivanje izlaza su BLEU \cite{papineni2002bleu} i METEOR \cite{denkowski2014meteor}, preuzete iz područja strojnog prevođenja. One uspoređuju generirano i očekivano pitanje: BLEU mjeri prosječnu preciznost u n-gramima, a METEOR uspoređuje sastavnice pitanja na nekoliko razina (identične riječi, jednakost korijena riječi, sinonimija, jednakost fraza).
 
 Ovaj model bolji je od temeljnih modela s kojima se uspoređuje, pogotovo na probranom skupu pitanja koja iziskuju referiranje na kontekst.
 
@@ -219,7 +265,9 @@ Za razliku od prethodno opisanih radova, ovdje:
 \end{itemize}
 
 \chapter{Zaključak}
-Iako zbog nedostatka točnih odgovora nepotpuno prikladan za korištenje u evaluaciji studenata, pristup u \cite{labutov2015deep} predstavlja inovativan i zanimljiv radni okvir za druge jezične primjene, kao npr.\ sažimanje \engl{summarization}. Prostor za napredak leži u korištenju kompleksnijih značajki, kao i klasifikacijskog modela kompleksnijeg od logističke regresije. Pristup Iako nov, rad \cite{flor2018semantic} predstavlja stariji pristup temeljen na pravilima, koji svejedno ne zaostaje za dubokim pristupom. Međutim oblikovanje pravila iziskuje jezičnu vještinu veću od prosjeka. Duboki model u \cite{du2018harvesting} dio je suvremenog trenda u obradi prirodnog jezika. Evaluacija je u ovom području otežana jer se može oslanjati na ljudski posao procjene kvalitete izlaza sustava.
+Iako zbog nedostatka točnih odgovora nepotpuno prikladan za korištenje u evaluaciji studenata, pristup u \cite{labutov2015deep} predstavlja inovativan i zanimljiv radni okvir za druge jezične primjene, kao npr.\ sažimanje \engl{summarization}. Prostor za napredak leži u korištenju kompleksnijih značajki, kao i klasifikacijskog modela kompleksnijeg od logističke regresije. Iako nov, rad \cite{flor2018semantic} predstavlja stariji pristup temeljen na pravilima, koji, prema izvješćenim rezultatima, svejedno ne zaostaje za dubokim pristupom. Međutim oblikovanje pravila iziskuje natprosječnu jezičnu vještinu, što je otegotna okolnost u kreiranju ovakvih sustava. Duboki model u \cite{du2018harvesting} dio je suvremenog trenda u obradi prirodnog jezika koji se oslanja na povratne neuronske mreže.
+
+Evaluacija je u ovom području otežana jer se može oslanjati na ljudski posao procjene kvalitete izlaza sustava. Takve metrike mogu biti i upitne smislenosti, kao npr.\ ocjenjivanje relevantnosti pitanja koje na semantičkoj ljestvici daje slabu ocjenu \cite{flor2018semantic}. Međutim postoje i alternative poput mjera korištenih u strojnom prevođenju.
 
 Iz perspektive sastavljača kviz-pitanja, tri analizirana rada ne djeluju uvjerljivo u zamjenjivanju ljudskog smišljanja pitanja. Pitanja koja zahtijevaju opisne odgovore kao u primjeru \cite{labutov2015deep} nipošto nisu prikladna, a odveć jednosmjerna, tzv.\ znaš - ne znaš pitanja, dobri sastavljači izbjegavaju stavljati u kvizove. Dobra pitanja kao temelj često imaju i više od jedne rečenice, pa i više od jednog paragrafa, a nekad se baziraju i na uzorcima koji prelaze jedan članak. Potencijalni prostor za napredak mogao bi biti u analizi ontologije izgrađene na velikom korpusu znanja.
 

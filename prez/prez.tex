@@ -1,0 +1,280 @@
+\documentclass[11pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usetheme{Darmstadt}
+\graphicspath{{../img/}}
+\begin{document}
+	\author{Fabijan Čorak \\ \small{mentor: izv.\ prof.\ dr.\ sc.\ Jan Šnajder}}
+	\title{Generiranje pitanja pomoću strojnog učenja}
+	%\subtitle{}
+	%\logo{}
+	\institute{Fakultet elektrotehnike i računarstva \\ Sveučilište u Zagrebu}
+	\date{5.\ lipnja 2019.}
+	%\subject{}
+	%\setbeamercovered{transparent}
+	%\setbeamertemplate{navigation symbols}{}
+	\begin{frame}[plain]
+	\maketitle
+\end{frame}
+
+\begin{frame}
+\frametitle{Uvod}
+\begin{itemize}
+	\item engleski jezik
+	\item domenska neovisnost
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Uvod}
+Dva pristupa
+\begin{itemize}
+	\item jedna izjavna rečenica $\rightarrow$ upitna rečenica
+	\item odlomak $\rightarrow$ upitna rečenica
+\end{itemize}
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Radovi}
+%\begin{itemize}
+%	\item Labutov, 2015., Duboka pitanja bez dubokog razumijevanja
+%	\item Flor, 2018., Pristup automatskom generiranju domenski neovisnih pitanja temeljen na semantičkim ulogama
+%	\item Du, 2018., Prikupljanje parova pitanja i odgovora temeljenih na odlomcima s Wikipedije
+%\end{itemize}
+%\end{frame}
+
+\begin{frame}
+\frametitle{Duboka pitanja bez dubokog razumijevanja}
+\begin{itemize}
+	\item Labutov et al., 2015.
+	\item dorađena Freebase kategorizacija svih wiki-članaka\\
+	(\textit{osoba, mjesto, događaj, organizacija, ...})
+	\item dodatno: svi članci već su podijeljeni na sekcije\\
+	(\textit{rani život, demografija, povijest, ...})
+	\item ontologija parova (kategorija, sekcija)\\
+	(\textit{(osoba, rani život), (osoba, politička karijera),\\..., (mjesto, demografija), ...})
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Duboka pitanja bez dubokog razumijevanja}
+\begin{itemize}
+	\item \textit{crowdsourcing} predložaka pitanja za svaki par u ontologiji,\\
+	npr.\ \textit{(osoba, rani život)}\\
+	Who were the key influences on \_\_\_\_\_\_\_ in their childhood?
+	\item Amazon Mechanical Turk
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Duboka pitanja bez dubokog razumijevanja}
+Uporaba
+\begin{itemize}
+	\item klasifikacija kategorije, sekcije ulaznog teksta\\
+	LR (200 000 tf-idf)
+	\item dohvaćanje predložaka iz baze za utvrđeni par (kategorija, sekcija)
+	\item klasifikacija prikladnosti predloška za pitanje\\
+	LR (200 000 tf-idf + 300 word2vec)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Duboka pitanja bez dubokog razumijevanja}
+Metrika - IR
+\begin{itemize}
+	\item ljudsko vrednovanje ekstrakcije pitanja na tekstovima iz 12 wiki-članaka
+	\item za svaki ulazni segment teksta sustav: izlaz - pitanja poredana prema procijenjenoj razini prikladnosti
+	\item kretanje preciznosti za različite razine odziva
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Duboka pitanja bez dubokog razumijevanja}
+	\begin{itemize}
+		\item duboko učenje?
+		\item duboka pitanja - temeljena na većem tekstu (više od jedne rečenice)
+		\item bez dubokog razumijevanja - sustav ne zna odgovore na pitanje
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Pristup automatskom generiranju domenski neovisnih pitanja temeljen na semantičkim ulogama}
+\begin{itemize}
+	\item Flor et Riordan, 2018.
+	\item sustav temeljen na pravilima
+	\item alati temeljeni na strojnom učenju za POS-tagging i SRL
+	\item SRL - Propbank notacija
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\begin{table}[h]
+		\begin{center}
+			\begin{tabular}{ |c|c| } 
+				\hline
+				\textbf{Oznaka} & \textbf{Uloga}\\
+				\hline
+				A0 & proto-agent (često gramatički subjekt)\\
+				\hline
+				A1 & proto-pacijent (često gramatički objekt)\\
+				\hline
+				A2 & instrument, atribut, primanje, količina itd.\\
+				\hline
+				A3 & početna točka ili stanje\\
+				\hline
+				A4 & krajnja točka ili stanje\\
+				\hline
+				AM-LOC & mjesto\\
+				\hline
+				AM-DIR & smjer\\
+				\hline
+				AM-TMP & vrijeme\\
+				\hline
+				AM-CAU & uzrok\\
+				\hline
+				AM-PNC & svrha\\
+				\hline
+				AM-MNR & način\\
+				\hline
+				AM-EXT & doseg\\
+				\hline
+				AM-DIS & izlaganje\\
+				\hline
+				AM-ADV & prilog\\
+				\hline
+				AM-MOD & modalni glagol\\
+				\hline
+				AM-NEG & negacija\\
+				\hline
+			\end{tabular}
+		\end{center}
+	\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Pristup automatskom generiranju domenski neovisnih pitanja temeljen na semantičkim ulogama}
+Uporaba
+\begin{itemize}
+	\item za svaku rečenicu ulaznog teksta: da/ne-pitanje i za skoro svaku semantičku ulogu u rečenici wh-pitanje
+	\item na temelju podatka o POS i SRL odabire se upitna (wh) riječ (\textit{where, when, how, ...})
+	\item u samom procesu pretvorbe izjavne u upitnu rečenicu korištena su jezična pravila\\
+	(njihov točan oblik nije naveden u radu)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Pristup automatskom generiranju domenski neovisnih pitanja temeljen na semantičkim ulogama}
+Metrika
+\begin{itemize}
+	\item ljudsko vrednovanje izlaza
+	\item gramatička točnost (1-5)
+	\item semantička točnost\\
+	(koliko dobro pitanje razumije značenje izvorne rečcenice; 1-5)
+	\item relevantnost\\
+	(koliko je pitanje vezano uz informacije u izvornoj rečenici; 0-3)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Pristup automatskom generiranju domenski neovisnih pitanja temeljen na semantičkim ulogama}
+Primjeri
+\begin{itemize}
+	\item \textit{The particles from the Sun also carry an electric charge.}\\
+	$\rightarrow$ \textit{Do the particles from the Sun carry an electric charge?}\\
+	(ocjene: 5, 5, 3)
+	\item \textit{Deep below is a place called the magma chamber.}\\
+	$\rightarrow$ \textit{Did a place call the magma chamber?}\\
+	(ocjene: 4.5, 1.5, 2.5)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Prikupljanje parova pitanja i odgovora temeljenih na odlomcima s Wikipedije}
+\begin{itemize}
+	\item Du et Cardie, 2018.
+	\item duboki pristup! (BiLSTM encoder-decoder + attention)
+	\item kao i prethodni rad: rečenica $\rightarrow$ upit\\
+	+ rečenica se obogaćuje kontekstualnim znanjem (umetanje koreferentnih tokena)
+	\item određivanje koreferentnih tokena - gotov model
+	\item SQuAD
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Prikupljanje parova pitanja i odgovora temeljenih na odlomcima s Wikipedije}
+Identifikacija odgovora
+\begin{itemize}
+	\item prvi zadatak sustava
+	\item samo jedan odgovor (ograničavajuće)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+%\frametitle{Prikupljanje parova pitanja i odgovora temeljenih na odlomcima s Wikipedije}
+\begin{figure}
+	\centering
+	\hbox{\hspace{-2.5em} \includegraphics[width=12.5cm]{gated_coref_nqg.png}}
+\end{figure}
+\begin{table}[h]
+	\tiny
+	\hbox{\hspace{-4em} \begin{tabular}{|c|ccccccccccc|}
+		\hline
+		word & they & the & panthers & defeated & the & arizona & cardinals & 49 & - & 15 & ...\\
+		ans. feature & O & O & O & O & B\_ANS & I\_ANS & I\_ANS & O & O & O & ...\\
+		coref.feature & B\_PRO & B\_ANT & I\_ANT & O & O & O & O & O & O & O & ...\\
+		\hline
+	\end{tabular}}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Prikupljanje parova pitanja i odgovora temeljenih na odlomcima s Wikipedije}
+
+\begin{itemize}
+	\item \textit{word embedding} + značajka odgovora + značajka koreferentnosti
+	\item profinjenje BIO-tagginga koreferentnosti (inovativnost)
+	\item $c_i \rightarrow d_i$ prema formuli: $d_i = c_i \odot ReLU(W_a c_i + W_b score_i + b)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Prikupljanje parova pitanja i odgovora temeljenih na odlomcima s Wikipedije}
+Metrika
+\begin{itemize}
+	\item ljudsko označavanje izlaza sustava (gramatičnost + smisao + odgovorivost)
+	\item metrike iz strojnog prevođenja (BLEU, METEOR)
+	\item postojeći model za davanje odgovora trenira se na generiranim pitanjima i evaluira
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Prikupljanje parova pitanja i odgovora temeljenih na odlomcima s Wikipedije}
+Primjeri
+\begin{itemize}
+	\item \textit{The elizabethan navigator, sir francis drake
+		was born in the nearby town of tavistock and was the
+		mayor of plymouth. ... . he died of dysentery in 1596 off the coast of puerto rico.}
+	\item gold: \textit{In what year did Francis Drake die?}
+	\item baseline (neprofinjeni kontekst): \textit{When did he die?}
+	\item generirano: \textit{When did sir francis drake die?}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Zaključak}
+Nedostaci
+\begin{itemize}
+	\item nepoznavanje odgovora
+	\item temeljenje upita na jednoj rečenici
+	\item jedno pitanje iz jedne rečenice
+\end{itemize}
+
+Prednosti
+\begin{itemize}
+	\item zanimljiv pristup, primjenjiv na druga područja
+	\item lakša izmjenjivost zbog neovisnosti o treniranju
+	\item ljudski neovisne metrike
+\end{itemize}
+\end{frame}
+
+\end{document}
