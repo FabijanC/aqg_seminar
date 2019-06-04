@@ -1,6 +1,7 @@
 \documentclass[11pt]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{array}
 \usetheme{Darmstadt}
 \graphicspath{{../img/}}
 \begin{document}
@@ -9,7 +10,7 @@
 	%\subtitle{}
 	%\logo{}
 	\institute{Fakultet elektrotehnike i računarstva \\ Sveučilište u Zagrebu}
-	\date{5.\ lipnja 2019.}
+	\date{\tiny 5.\ lipnja 2019.}
 	%\subject{}
 	%\setbeamercovered{transparent}
 	%\setbeamertemplate{navigation symbols}{}
@@ -25,21 +26,12 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{Uvod}
-Dva pristupa
-\begin{itemize}
-	\item jedna izjavna rečenica $\rightarrow$ upitna rečenica
-	\item odlomak $\rightarrow$ upitna rečenica
-\end{itemize}
-\end{frame}
-
 %\begin{frame}
-%\frametitle{Radovi}
+%\frametitle{Uvod}
+%Dva pristupa
 %\begin{itemize}
-%	\item Labutov, 2015., Duboka pitanja bez dubokog razumijevanja
-%	\item Flor, 2018., Pristup automatskom generiranju domenski neovisnih pitanja temeljen na semantičkim ulogama
-%	\item Du, 2018., Prikupljanje parova pitanja i odgovora temeljenih na odlomcima s Wikipedije
+%	\item jedna izjavna rečenica $\rightarrow$ upitna rečenica
+%	\item odlomak $\rightarrow$ upitna rečenica
 %\end{itemize}
 %\end{frame}
 
@@ -262,19 +254,26 @@ Primjeri
 
 \begin{frame}
 \frametitle{Zaključak}
-Nedostaci
-\begin{itemize}
-	\item nepoznavanje odgovora
-	\item temeljenje upita na jednoj rečenici
-	\item jedno pitanje iz jedne rečenice
-\end{itemize}
 
-Prednosti
-\begin{itemize}
-	\item zanimljiv pristup, primjenjiv na druga područja
-	\item lakša izmjenjivost zbog neovisnosti o treniranju
-	\item ljudski neovisne metrike
-\end{itemize}
+\begin{table}[h]	
+	\begin{tabular}{|c|m{3cm}|m{3cm}|}
+			\hline
+			Pristup & Prednosti & Nedostaci \\
+			\hline
+			Predlošci + LR & zanimljiv pristup, primjenjiv drugdje & nepoznavanje odgovora\\
+			\hline
+			Pravila + SRL & neovisnost o treniranju & jedna rečenica - nerobusnost \\
+			\hline
+			BiLSTM + koref. & ljudski neovisne metrike & jedna rečenica - jedno pitanje\\
+			\hline
+	\end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+	\Large{Hvala na pažnji}
+\end{center}
 \end{frame}
 
 \end{document}
